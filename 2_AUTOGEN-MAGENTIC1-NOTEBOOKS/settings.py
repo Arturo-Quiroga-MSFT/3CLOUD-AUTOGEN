@@ -10,9 +10,9 @@ llm_config = {
     "provider": "AzureOpenAIChatCompletionClient",
     "config": {
         "model": "gpt-4o",
-        "api_key": os.environ.get("AZURE_OPENAI_API_KEY", ""),
-        "azure_endpoint": os.environ.get("AZURE_OPENAI_URL", ""),
-        "api_version": "2024-06-01",
+        "api_key": os.environ.get("AZURE_OPENAI_API_KEY", "3ShjYyRHd6t0VthIuoOUe1GEnwlj1tkNSHkOs6IrO1CxKQ3gHmsIJQQJ99BAACfhMk5XJ3w3AAABACOG3ddZ"),
+        "azure_endpoint": os.environ.get("AZURE_OPENAI_URL", "https://aq-aoai-swedencentral.openai.azure.com/"),
+        "api_version": "2024-10-21",
     },
 }
 

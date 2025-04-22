@@ -1,0 +1,8 @@
+# Use Azure Open AI with key
+provider: autogen_ext.models.openai.AzureOpenAIChatCompletionClient
+config:
+   model: gpt-4o
+   azure_endpoint: "https://aq-aoai-swedencentral.openai.azure.com/"
+   azure_deployment: gpt-4o
+   api_version: "2024-10-21"
+   api_key: "3ShjYyRHd6t0VthIuoOUe1GEnwlj1tkNSHkOs6IrO1CxKQ3gHmsIJQQJ99BAACfhMk5XJ3w3AAABACOG3ddZ"
