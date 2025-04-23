@@ -47,7 +47,7 @@ async def simple_agent():
 
     # Agent/s thought process. It gets populated when the agent is thinking, or when using tools.
     # For this example can be empty
-    print(f" Touthg process: {response.inner_messages}")
+    print(f" Thought process: {response.inner_messages}")
 
     # Agent/s final response
     print(f" Agent's final response: {response.chat_message}")

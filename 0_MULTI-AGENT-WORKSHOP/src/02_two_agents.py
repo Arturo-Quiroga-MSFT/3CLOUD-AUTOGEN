@@ -54,6 +54,7 @@ async def team_2_agents():
         [chandler_agent, joey_agent], termination_condition=text_termination
     )
     result = await team.run(task="Start the conversation")
+    print()
     print(result)
 
     # Lets go for another round. But this time, as a stream.
@@ -67,6 +68,7 @@ async def team_2_agents():
         if isinstance(message, TaskResult):
             print("Stop Reason:", message.stop_reason)
         else:
+            print()
             print(message)
 
 

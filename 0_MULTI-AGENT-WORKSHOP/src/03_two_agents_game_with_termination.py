@@ -34,6 +34,7 @@ async def team_2_agents_guessing_game():
     load_dotenv()
     randomNumber = random.randint(1, 100)
 
+    print()
     print(f"Random number to be guessed: {randomNumber}")
 
     client = ChatCompletionClient.load_component(llm_config)
@@ -70,6 +71,7 @@ async def team_2_agents_guessing_game():
         if isinstance(message, TaskResult):
             print("Stop Reason:", message.stop_reason)
         else:
+            print()
             print(message)
 
 
