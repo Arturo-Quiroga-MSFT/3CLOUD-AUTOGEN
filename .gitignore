@@ -1,3 +1,4 @@
 .env
 model_config.yaml
 model_config.yml
+model_config_reasoning_model.yaml
