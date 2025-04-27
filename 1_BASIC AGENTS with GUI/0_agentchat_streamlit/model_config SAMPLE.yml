@@ -1,0 +1,8 @@
+# Use Azure Open AI with key
+provider: autogen_ext.models.openai.AzureOpenAIChatCompletionClient
+config:
+   model: your model
+   azure_endpoint: "your endpoint"
+   azure_deployment: your model deployment name
+   api_version: "2024-10-21"
+   api_key: "your key"
