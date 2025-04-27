@@ -8,6 +8,9 @@ import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
+#import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')  # Use a non-GUI backend to prevent NSWindow errors on macOS
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -24,12 +27,12 @@ from autogen_core import CancellationToken
 # Model Client Initialization
 # --------------------------------------------------
 model_client = AzureOpenAIChatCompletionClient(
-    azure_deployment="o1",
+    azure_deployment="gpt-4o",
     azure_endpoint="https://aq-aoai-swedencentral.openai.azure.com/",
-    model="o1",
+    model="gpt-4o",
     api_version="2025-03-01-preview",
-    api_key="3ShjYyRHd6t0VthIuoOUe1GEnwlj1tkNSHkOsIrO1CxKQ3gHmsIJQQJ99BAACfhMk5XJ3w3AAABACOG3ddZ",
-    # temperature=0.7,  # Uncomment and modify if needed.
+    api_key="3ShjYyRHd6t0VthIuoOUe1GEnwlj1tkNSHkOs6IrO1CxKQ3gHmsIJQQJ99BAACfhMk5XJ3w3AAABACOG3ddZ",
+    temperature=0.7,  # Uncomment and modify if needed.
 )
 
 # --------------------------------------------------
