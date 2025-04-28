@@ -61,6 +61,14 @@ async def set_starts() -> List[cl.Starter]:
             label="Write Code",
             message="Write a function that merge two list of numbers into single sorted list.",
         ),
+        cl.Starter(
+            label="Write a Song",
+            message="Write a song about the sun.",
+        ),
+        cl.Starter(
+            label="Write an article",
+            message="Write an article about the impact of AI on society.",
+        ),
     ]
 
 

@@ -30,9 +30,9 @@ app.mount("/static", StaticFiles(directory="."), name="static")
 @app.get("/")
 async def root():
     """Serve the chat interface HTML file."""
-    return FileResponse("app_agent.html")
+    return FileResponse("/Users/arturoquiroga/3CLOUD-AUTOGEN/1_BASIC AGENTS with GUI/agentchat_fastapi/app_agent.html")
 
-model_config_path = "model_config.yaml"
+model_config_path = "/Users/arturoquiroga/3CLOUD-AUTOGEN/1_BASIC AGENTS with GUI/agentchat_fastapi/model_config.yaml"
 state_path = "agent_state.json"
 history_path = "agent_history.json"
 

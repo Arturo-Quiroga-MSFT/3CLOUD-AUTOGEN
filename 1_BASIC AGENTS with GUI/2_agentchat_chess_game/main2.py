@@ -10,6 +10,12 @@ from autogen_agentchat.ui import Console
 from autogen_core.model_context import BufferedChatCompletionContext
 from autogen_core.models import ChatCompletionClient
 
+# Import for SVG display (works in Jupyter Notebook or web environments)
+try:
+    from IPython.display import SVG, display
+except ImportError:
+    SVG, display = None, None
+
 
 def create_ai_player(model_client: ChatCompletionClient) -> AssistantAgent:
     # Create an agent that can use the model client.
@@ -34,7 +40,6 @@ def get_ai_prompt(board: chess.Board) -> str:
         last_move = board.peek().uci()
     except IndexError:
         last_move = None
-    # Current player color.
     player_color = "white" if board.turn == chess.WHITE else "black"
     user_color = "black" if player_color == "white" else "white"
     legal_moves = ", ".join([move.uci() for move in board.legal_moves])
@@ -55,13 +60,13 @@ def get_user_prompt(board: chess.Board) -> str:
         last_move = board.peek().uci()
     except IndexError:
         last_move = None
-    # Current player color.
     player_color = "white" if board.turn == chess.WHITE else "black"
     legal_moves = ", ".join([move.uci() for move in board.legal_moves])
     board_display = board.unicode(borders=True)
     if last_move is None:
         prompt = f"New Game!\nBoard:\n{board_display}\nYou play {player_color}\nYour legal moves: {legal_moves}\n"
-    prompt = f"Board:\n{board_display}\nYou play {player_color}\nAI's last move: {last_move}\nYour legal moves: {legal_moves}\n"
+    else:
+        prompt = f"Board:\n{board_display}\nYou play {player_color}\nAI's last move: {last_move}\nYour legal moves: {legal_moves}\n"
     return prompt + "Enter your move in UCI format: "
 
 
@@ -69,11 +74,9 @@ def extract_move(response: str) -> str:
     start = response.find("<move>") 
     end = response.find("</move>")
     
-    if start == -1 or end == -1:
+    if start == -1 or end == -1 or end < start:
         raise ValueError("Invalid response format.")
-    if end < start:
-        raise ValueError("Invalid response format.")
-    return response[start+ len("<move>"):end].strip()
+    return response[start + len("<move>"):end].strip()
 
 
 async def get_ai_move(board: chess.Board, player: AssistantAgent, max_tries: int) -> str:
@@ -83,24 +86,20 @@ async def get_ai_move(board: chess.Board, player: AssistantAgent, max_tries: int
         result = await Console(player.run_stream(task=task))
         count += 1
         assert isinstance(result.messages[-1], TextMessage)
-        # Check if the response is a valid UC move.
         try:
             move = chess.Move.from_uci(extract_move(result.messages[-1].content))
         except (ValueError, IndexError):
             task = "Invalid format. Please read instruction.\n" + get_ai_prompt(board)
             continue
-        # Check if the move is legal.
         if move not in board.legal_moves:
             task = "Invalid move. Please enter a move from the list of legal moves.\n" + get_ai_prompt(board)
             continue
         return move.uci()
-    # If the player does not provide a valid move, return a random move.
     return get_random_move(board)
 
 
-async def main(human_player: bool, max_tries: int) -> None:
+async def main(human_player: bool, max_tries: int, render_svg: bool) -> None:
     board = chess.Board()
-    # Load the model client from config.
     with open("/Users/arturoquiroga/3CLOUD-AUTOGEN/1_BASIC AGENTS with GUI/2_agentchat_chess_game/model_config.yaml", "r") as f:
         model_config = yaml.safe_load(f)
     model_client = ChatCompletionClient.load_component(model_config)
@@ -108,9 +107,7 @@ async def main(human_player: bool, max_tries: int) -> None:
     while not board.is_game_over():
         # Get the AI's move.
         ai_move = await get_ai_move(board, player, max_tries)
-        # Make the AI's move.
         board.push(chess.Move.from_uci(ai_move))
-        # Check if the game is over.
         if board.is_game_over():
             break
         # Get the user's move.
@@ -118,14 +115,27 @@ async def main(human_player: bool, max_tries: int) -> None:
             user_move = input(get_user_prompt(board))
         else:
             user_move = get_random_move(board)
-        # Make the user's move.
         board.push(chess.Move.from_uci(user_move))
         print("--------- User --------")
         print(user_move)
         print("-------- Board --------")
-        print(board.unicode(borders=True))
+        # Conditionally render SVG if flag is set, otherwise revert to text.
+        if render_svg and SVG and display:
+            # Clear previous output in Jupyter (useful if running in a Notebook).
+            try:
+                from IPython.display import clear_output
+                clear_output(wait=True)
+            except ImportError:
+                pass
+            display(SVG(board._repr_svg_()))
+        else:
+            print(board.unicode(borders=True))
 
-    result = "AI wins!" if board.result() == "1-0" else "User wins!" if board.result() == "0-1" else "Draw!"
+    result = (
+        "AI wins!" if board.result() == "1-0" 
+        else "User wins!" if board.result() == "0-1" 
+        else "Draw!"
+    )
     print("----------------")
     print(f"Game over! Result: {result}")
 
@@ -138,5 +148,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--max-tries", type=int, default=10, help="Maximum number of tries for AI input before a random move take over."
     )
+    parser.add_argument(
+        "--render-svg", action="store_true", help="Render board as SVG instead of text (requires IPython display)."
+    )
     args = parser.parse_args()
-    asyncio.run(main(args.human, args.max_tries))
+    asyncio.run(main(args.human, args.max_tries, args.render_svg))

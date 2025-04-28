@@ -29,7 +29,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-model_config_path = "model_config.yaml"
+model_config_path = "/Users/arturoquiroga/3CLOUD-AUTOGEN/1_BASIC AGENTS with GUI/agentchat_fastapi/model_config.yaml"
 state_path = "team_state.json"
 history_path = "team_history.json"
 
@@ -39,7 +39,7 @@ app.mount("/static", StaticFiles(directory="."), name="static")
 @app.get("/")
 async def root():
     """Serve the chat interface HTML file."""
-    return FileResponse("app_team.html")
+    return FileResponse("/Users/arturoquiroga/3CLOUD-AUTOGEN/1_BASIC AGENTS with GUI/agentchat_fastapi/app_team.html")
 
 
 async def get_team(
