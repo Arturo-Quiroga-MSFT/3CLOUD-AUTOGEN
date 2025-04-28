@@ -12,7 +12,7 @@ llm_config = {
         "model": "gpt-4o",
         "api_key": os.environ.get("AZURE_OPENAI_API_KEY", ""),
         "azure_endpoint": os.environ.get("AZURE_OPENAI_URL", ""),
-        "api_version": "2024-10-21",
+        "api_version": "2025-03-01-preview",
     },
 }
 

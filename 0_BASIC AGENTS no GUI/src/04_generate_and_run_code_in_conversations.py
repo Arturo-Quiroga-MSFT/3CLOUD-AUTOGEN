@@ -58,6 +58,8 @@ async def coding_agents():
     # the same environment.
     executor = LocalCommandLineCodeExecutor(
         timeout=10,  # Timeout for each code execution in seconds.
+        # The command line code executor will use the same environment as the current process.
+        # This is not recommended for security reasons, but it is fine for this example.
         # Use the temporary directory to store the code files.
         work_dir=generated_directory,
     )
