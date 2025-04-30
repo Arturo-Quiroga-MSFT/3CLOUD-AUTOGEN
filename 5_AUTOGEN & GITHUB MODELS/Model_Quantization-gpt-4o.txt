@@ -1,0 +1,23 @@
+The main purposes of quantizing an LLM are:
+
+1. **Reducing Memory Footprint**:
+   - LLMs can be extremely large (often comprising billions of parameters), and reducing the precision in which weights and activations are stored can significantly decrease the amount of memory they require.
+   - For example, reducing precision from FP32 to INT8 results in a 4x reduction in memory usage for parameters, allowing the model to fit into smaller hardware or memory-constrained environments.
+
+2. **Improving Inference Efficiency**:
+   - Quantization reduces the computational complexity of arithmetic operations. Lower-precision operations, such as INT8 multiplications and additions, are computationally cheaper and faster than their FP32 counterparts.
+   - This leads to faster inference times, making LLMs more practical for real-time applications or deployment on resource-constrained devices.
+
+3. **Lower Power Consumption**:
+   - Because lower-precision computations require less energy, quantization can reduce the power consumption of LLMs during inference. This is especially beneficial for deploying LLMs on mobile devices, edge devices, or in large-scale server environments where energy efficiency is critical.
+
+4. **Enabling Deployment on Specialized Hardware**:
+   - Many specialized hardware accelerators (e.g., GPUs, TPUs, or AI-specific chips like NVIDIA Tensor Cores or AWS Inferentia) are optimized for lower-precision computations. Quantized models can take full advantage of these accelerators, enhancing performance and reducing latency.
+
+5. **Facilitating Edge or Mobile Deployments**:
+   - By significantly shrinking the model's size and computational complexity, quantized LLMs can be deployed on devices like smartphones, IoT devices, or edge servers, which have limited resources compared to cloud-based infrastructure.
+
+6. **Preserving Model Accuracy** (with Careful Calibration):
+   - Many advanced quantization techniques ensure that the degradation in model accuracy due to reducing numerical precision is minimal. Techniques like post-training quantization and quantization-aware training ensure that the model retains much of its original performance even after quantization.
+
+Quantization is an essential tool in the quest to make LLMs more efficient, accessible, and deployable in a wider range of real-world scenarios.

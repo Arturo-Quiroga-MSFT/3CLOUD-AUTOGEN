@@ -1,0 +1,26 @@
+Quantization is the process of taking the high‑precision (e.g. 16‑ or 32‑bit floating‑point) weights and/or activations in a neural network and representing them in a lower‑precision format (8‑bit, 4‑bit or even 3‑/2‑bit integers). In the context of large language models (LLMs), the main purposes are:
+
+1. Reduce memory footprint  
+   – A 7 B–13 B+ LLM in full 16‑ or 32‑bit can easily need 30–50 GB of GPU (or CPU) RAM.  
+   – Quantizing to 8‑bit roughly halves that; 4‑bit can slash it to around 10–15 GB.  
+   – Smaller memory means you can run bigger models on cheaper hardware (e.g. a single 24 GB GPU or even a CPU).
+
+2. Speed up inference  
+   – Integer (or lower‑bit) arithmetic is typically faster on modern accelerators and CPUs than full‑precision floats.  
+   – Memory bandwidth is reduced (smaller tensors), so you spend less time moving data in and out of RAM.  
+   – Overall latency per token often drops by 20–50% or more, depending on hardware and software support.
+
+3. Lower power and cost  
+   – Less memory and compute work translates to lower energy consumption.  
+   – In cloud settings, quantized models incur lower instance costs and let you serve more queries per dollar.
+
+4. Deploy on edge or constrained devices  
+   – Quantized LLMs can fit into the RAM limits of mobile CPUs, embedded boards, or consumer‑grade GPUs.  
+   – Enables offline or on‑device inference for privacy‑sensitive or low‑latency use cases.
+
+Trade‑offs and mitigation  
+– Lower precision can introduce quantization noise, hurting model quality (perplexity, accuracy).  
+– Modern methods (GPTQ, AWQ, SmoothQuant, LLM.int8, QLoRA for fine‑tuning in low precision) use smart calibration or mixed‑precision schemes to keep output nearly identical to full‑precision.  
+– You choose how aggressive to be (8‑bit is often “lossless,” 4‑bit may need more careful handling, <4‑bit is still experimental).
+
+In short, quantization makes large models leaner, faster, cheaper—and often “just as good” for many practical inference tasks—so you can deploy powerful LLMs in more settings.
